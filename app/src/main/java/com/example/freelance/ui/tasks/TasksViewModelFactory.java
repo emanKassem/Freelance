@@ -10,6 +10,7 @@ import com.example.freelance.data.tasks.TasksRepository;
 public class TasksViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     @Override
+    @SuppressWarnings("unchecked")
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(TasksViewModel.class)) {
             return (T) new TasksViewModel(TasksRepository.getInstance(new TasksDataSource()));

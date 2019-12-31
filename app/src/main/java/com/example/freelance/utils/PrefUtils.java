@@ -47,7 +47,7 @@ public class PrefUtils {
      *
      * @return string value for that key.
      */
-    public static String getKeys(Context context, String key) {
+    public String getKeys(Context context, String key) {
         return getSharedPreferences(context).getString(key, null);
     }
 

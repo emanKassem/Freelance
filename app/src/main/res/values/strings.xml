@@ -20,4 +20,13 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="token">Token</string>
+    <string name="title_refresh">Refresh</string>
+    <string name="title_visit_info">Info</string>
+    <string name="title_visit_feedback">Feedback</string>
+    <string name="territory">Territory :</string>
+    <string name="brick">Brick :</string>
+    <string name="due_date">Due date :</string>
+    <string name="created_at">Created at :</string>
+    <string name="submit">Submit</string>
+    <string name="done">Done</string>
 </resources>

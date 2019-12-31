@@ -54,7 +54,7 @@ public class ApiClient {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request original = chain.request();
-                String access = PrefUtils.getKeys(App.getContext(), App.getContext().getString(R.string.token));
+                String access = PrefUtils.getInstance().getKeys(App.getContext(), App.getContext().getString(R.string.token));
                 Request.Builder requestBuilder;
                 if (access!=null){
                     requestBuilder = original.newBuilder()

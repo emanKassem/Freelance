@@ -4,16 +4,40 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class MessagesViewModel extends ViewModel {
+import com.example.freelance.R;
+import com.example.freelance.data.Result;
+import com.example.freelance.data.messages.MessagesRepository;
+import com.example.freelance.data.model.Message;
+import com.example.freelance.ui.ViewCallback;
+import com.example.freelance.ui.login.ViewResult;
 
-    private MutableLiveData<String> mText;
+import java.util.List;
 
-    public MessagesViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is Messages fragment");
+public class MessagesViewModel extends ViewModel implements ViewCallback<List<Message>> {
+
+
+    private MutableLiveData<ViewResult> messagesResult = new MutableLiveData<>();
+    private MessagesRepository messagesRepository;
+
+    public LiveData<ViewResult> getMessagesResult() {
+        return messagesResult;
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public MessagesViewModel(MessagesRepository messagesRepository) {
+        this.messagesRepository = messagesRepository;
     }
+
+    public void getMessages(){
+        messagesRepository.getMessages(this);
+    }
+
+    @Override
+    public void result(Result<List<Message>> result) {
+        if (result instanceof Result.Success) {
+            messagesResult.setValue(new ViewResult(((Result.Success) result).getData()));
+        } else {
+            messagesResult.setValue(new ViewResult(R.string.login_failed));
+        }
+    }
+
 }

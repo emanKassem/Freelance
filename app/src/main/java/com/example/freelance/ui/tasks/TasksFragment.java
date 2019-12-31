@@ -1,5 +1,6 @@
 package com.example.freelance.ui.tasks;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.example.freelance.R;
 import com.example.freelance.app.App;
 import com.example.freelance.data.model.Task;
 import com.example.freelance.ui.login.ViewResult;
+import com.example.freelance.ui.tasks.taskItem.TaskFragment;
 
 import java.util.List;
 
@@ -37,10 +39,12 @@ public class TasksFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tasks, container, false);
         ButterKnife.bind(this, view);
+        final ProgressDialog pd = ProgressDialog.show(App.getContext(), "", "Loading...", false, true);
         tasksViewModel = ViewModelProviders.of(this, new TasksViewModelFactory()).get(TasksViewModel.class);
         tasksViewModel.getTasksResult().observe(this, new Observer<ViewResult>() {
             @Override
             public void onChanged(ViewResult viewResult) {
+                pd.dismiss();
                 if (viewResult == null) {
                     return;
                 }
@@ -63,7 +67,19 @@ public class TasksFragment extends Fragment {
     }
 
     private void updateUiWithTasks(List<Task> tasks) {
-        tasksAdapter = new TasksAdapter(tasks);
+        tasksAdapter = new TasksAdapter(tasks, new TasksAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Task task) {
+                TaskFragment taskFragment= new TaskFragment();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("task", task);
+                taskFragment.setArguments(bundle);
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.drawer_layout, taskFragment, "findThisFragment")
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
         tasksRecyclerView.setAdapter(tasksAdapter);
     }
 

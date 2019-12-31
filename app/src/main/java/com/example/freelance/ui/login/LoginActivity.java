@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.example.freelance.MainActivity;
 import com.example.freelance.R;
 import com.example.freelance.app.App;
+import com.example.freelance.utils.PrefUtils;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -36,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         App.setContext(this);
+        //isLogin();
         loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
 
@@ -116,6 +118,14 @@ public class LoginActivity extends AppCompatActivity {
                         passwordEditText.getText().toString());
             }
         });
+    }
+
+    private void isLogin() {
+        if (PrefUtils.getInstance().getKeys(this, getString(R.string.token))!=null){
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void updateUiWithUser(LoggedInUserView model) {

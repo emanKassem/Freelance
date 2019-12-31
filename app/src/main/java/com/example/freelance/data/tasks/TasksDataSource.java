@@ -2,7 +2,9 @@ package com.example.freelance.data.tasks;
 
 import com.example.freelance.app.App;
 import com.example.freelance.data.model.Result;
+import com.example.freelance.data.model.ResultList;
 import com.example.freelance.data.model.Task;
+import com.example.freelance.data.model.TaskDesc;
 import com.example.freelance.network.ApiClient;
 import com.example.freelance.network.ApiService;
 
@@ -22,12 +24,12 @@ public class TasksDataSource {
     }
 
     public void getTasks(final TasksRepositoryCallback callback){
-        Call<Result<List<Task>>> tasks = apiService.tasks();
-        tasks.enqueue(new Callback<Result<List<Task>>>() {
+        Call<ResultList<Task>> tasks = apiService.tasks();
+        tasks.enqueue(new Callback<ResultList<Task>>() {
             @Override
-            public void onResponse(Call<Result<List<Task>>> call, Response<Result<List<Task>>> response) {
+            public void onResponse(Call<ResultList<Task>> call, Response<ResultList<Task>> response) {
                 if (response.body()!=null){
-                    Result<List<Task>> tasks = response.body();
+                    ResultList<Task> tasks = response.body();
                     callback.tasks(new com.example.freelance.data.Result.Success<>(tasks.getData()));
                 }else {
                     callback.tasks(new com.example.freelance.data.Result.Error(new IOException("Error getting tasks")));
@@ -35,8 +37,28 @@ public class TasksDataSource {
             }
 
             @Override
-            public void onFailure(Call<Result<List<Task>>> call, Throwable t) {
+            public void onFailure(Call<ResultList<Task>> call, Throwable t) {
                 callback.tasks(new com.example.freelance.data.Result.Error(new IOException("Error getting tasks")));
+            }
+        });
+    }
+
+    public void getTask(TasksRepositoryCallback callback, int id) {
+        Call<Result<TaskDesc>> taskDesc = apiService.task(id);
+        taskDesc.enqueue(new Callback<Result<TaskDesc>>() {
+            @Override
+            public void onResponse(Call<Result<TaskDesc>> call, Response<Result<TaskDesc>> response) {
+                if (response.body()!=null){
+                    Result<TaskDesc> message = response.body();
+                    callback.task(new com.example.freelance.data.Result.Success<>(message.getData()));
+                }else {
+                    callback.task(new com.example.freelance.data.Result.Error(new IOException("Error getting tasks")));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Result<TaskDesc>> call, Throwable t) {
+                callback.task(new com.example.freelance.data.Result.Error(new IOException("Error getting tasks")));
             }
         });
     }

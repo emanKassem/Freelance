@@ -2,7 +2,9 @@ package com.example.freelance.data.tasks;
 
 import com.example.freelance.data.Result;
 import com.example.freelance.data.model.Task;
+import com.example.freelance.data.model.TaskDesc;
 import com.example.freelance.ui.ViewCallback;
+import com.example.freelance.ui.tasks.taskItem.TaskViewModel;
 
 import java.util.List;
 
@@ -29,7 +31,17 @@ public class TasksRepository implements TasksRepositoryCallback{
     }
 
     @Override
+    public void task(Result<TaskDesc> taskDesc) {
+        viewCallback.result(taskDesc);
+    }
+
+    @Override
     public void tasks(Result<List<Task>> tasks) {
         viewCallback.result(tasks);
+    }
+
+    public void getTask(ViewCallback viewCallback, int id) {
+        this.viewCallback = viewCallback;
+        dataSource.getTask(this, id);
     }
 }

@@ -23,13 +23,14 @@ public class HomeFragment extends Fragment {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        TabsPagerAdapter tabsPagerAdapter = new TabsPagerAdapter(getActivity(), getChildFragmentManager());
+        /*TabsPagerAdapter tabsPagerAdapter = new TabsPagerAdapter(getActivity(), getChildFragmentManager());
 
         ViewPager viewPager = root.findViewById(R.id.view_pager);
+        viewPager.setOffscreenPageLimit(3);
         viewPager.setAdapter(tabsPagerAdapter);
 
         TabLayout tabs = root.findViewById(R.id.tabs);
-        tabs.setupWithViewPager(viewPager);
+        tabs.setupWithViewPager(viewPager);*/
         return root;
     }
 }
